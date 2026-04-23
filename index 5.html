@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ViaLog — Informe Ferroviário Diário · MRS Logística · Via Permanente">
+<title>ViaLog — Informe Ferroviário Diário</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚂</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#090b0e;
+  --surface:#0e1117;
+  --surface2:#13181f;
+  --surface3:#1a2028;
+  --border:#1e2530;
+  --border2:#252d38;
+  --orange:#e85d04;
+  --amber:#f4a22d;
+  --green:#009c3b;
+  --red:#de2910;
+  --teal:#0099a8;
+  --text:#eae6df;
+  --muted:#6b717a;
+  --muted2:#3a424e;
+  --up:#4ade80;
+  --down:#f87171;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(9,11,14,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:58px;
+}
+.topbar-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;letter-spacing:.07em;color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.topbar-logo span{color:var(--orange)}
+.topbar-logo small{
+  font-family:'Barlow',sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+  margin-left:4px;
+}
+.topbar-nav{display:flex;gap:6px;align-items:center}
+.nav-btn{
+  padding:7px 16px;border-radius:5px;
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;border:none;
+  background:transparent;color:var(--muted);
+  transition:color .15s,background .15s;
+}
+.nav-btn:hover{color:var(--text);background:var(--surface3)}
+.nav-btn.active{color:var(--orange);background:rgba(232,93,4,.1)}
+.nav-pill{
+  background:var(--orange);color:#fff;
+  padding:7px 16px;border-radius:5px;
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;border:none;
+  transition:opacity .15s;
+}
+.nav-pill:hover{opacity:.85}
+.topbar-date{
+  font-size:11px;color:var(--muted2);
+  letter-spacing:.08em;text-transform:uppercase;
+  display:none;
+}
+@media(min-width:900px){.topbar-date{display:block}}
+
+/* ── TICKER ── */
+.ticker{
+  position:fixed;top:58px;left:0;right:0;z-index:190;
+  background:var(--surface);
+  border-bottom:2px solid var(--border);
+  padding:7px 0;overflow:hidden;white-space:nowrap;
+}
+.ticker-track{display:inline-flex;animation:ticker 45s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ti{display:inline-flex;align-items:center;gap:7px;margin-right:48px;font-size:12px;font-weight:500}
+.ti-dot{color:var(--orange);font-size:8px}
+.ti-label{color:var(--muted2)}
+.ti-val{color:var(--text);font-weight:700}
+.ti-up{color:var(--up);font-weight:700;font-size:11px}
+.ti-down{color:var(--down);font-weight:700;font-size:11px}
+.ti-flat{color:var(--amber);font-weight:700;font-size:11px}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* ── MAIN ── */
+main{padding-top:100px}
+
+/* ── HERO ── */
+.hero{
+  padding:52px 32px 40px;
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:end;gap:32px;
+}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:40px 20px 28px}}
+.hero-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--orange);margin-bottom:10px;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,8vw,88px);
+  letter-spacing:.06em;line-height:.92;
+  color:var(--text);
+}
+.hero-title em{color:var(--orange);font-style:normal}
+.hero-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted2);
+  margin-top:10px;
+}
+.hero-right{text-align:right;flex-shrink:0}
+.edition-box{
+  background:rgba(232,93,4,.08);
+  border:1px solid rgba(232,93,4,.25);
+  border-radius:6px;padding:14px 22px;
+  display:inline-block;margin-bottom:8px;
+}
+.edition-label{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:3px}
+.edition-date{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.05em;color:var(--text);line-height:1}
+.edition-num{font-size:10px;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase}
+
+/* ── LEAD CARD ── */
+.lead-wrap{max-width:1200px;margin:0 auto;padding:0 32px 24px}
+@media(max-width:700px){.lead-wrap{padding:0 20px 20px}}
+.lead{
+  background:linear-gradient(90deg,rgba(232,93,4,.09) 0%,rgba(232,93,4,.02) 100%);
+  border:1px solid rgba(232,93,4,.2);
+  border-left:5px solid var(--orange);
+  border-radius:6px;padding:18px 24px;
+  display:flex;align-items:flex-start;gap:18px;
+}
+.lead-badge{
+  background:var(--orange);color:#000;
+  font-size:9px;font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;padding:5px 10px;
+  border-radius:3px;flex-shrink:0;line-height:1.3;text-align:center;
+}
+.lead-text{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:600;color:var(--text);
+  line-height:1.4;letter-spacing:.02em;
+}
+.lead-text strong{color:var(--amber)}
+
+/* ── MINERAL BAR ── */
+.mineral-wrap{max-width:1200px;margin:0 auto;padding:0 32px 28px}
+@media(max-width:700px){.mineral-wrap{padding:0 20px 20px}}
+.mineral-bar{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:3px solid var(--amber);
+  border-radius:6px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  overflow:hidden;
+}
+.mi{padding:14px 18px;border-right:1px solid var(--border)}
+.mi:last-child{border-right:none}
+.mi-label{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.mi-val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;color:var(--text);line-height:1}
+.mi-chg{font-size:11px;font-weight:700;margin-top:3px}
+.up{color:var(--up)}.down{color:var(--down)}.warn{color:var(--amber)}
+
+/* ── SECTION SWITCHER ── */
+.section-tabs{
+  max-width:1200px;margin:0 auto;
+  padding:0 32px 20px;
+  display:flex;gap:4px;
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;
+}
+@media(max-width:700px){.section-tabs{padding:0 20px 16px}}
+.stab{
+  padding:9px 20px;border-radius:5px;
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  white-space:nowrap;transition:all .15s;flex-shrink:0;
+}
+.stab:hover{color:var(--text);background:var(--surface3)}
+.stab.active{color:var(--orange);background:rgba(232,93,4,.1)}
+
+/* ── NEWS GRID ── */
+.news-wrap{max-width:1200px;margin:0 auto;padding:28px 32px}
+@media(max-width:700px){.news-wrap{padding:20px}}
+.region-panel{display:none}
+.region-panel.active{display:block}
+
+.region-cols{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:18px;
+}
+
+.col-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+}
+.col-head{
+  padding:13px 18px 11px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.col-flag{font-size:22px;line-height:1}
+.col-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;line-height:1}
+.col-br .col-head{border-top:4px solid var(--green)}
+.col-cn .col-head{border-top:4px solid var(--red)}
+.col-wo .col-head{border-top:4px solid var(--teal)}
+.col-body{padding:14px 16px}
+
+.ni{padding:12px 0;border-bottom:1px solid #141820}
+.ni:last-child{border-bottom:none}
+.ni-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.ni-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.col-br .ni-dot{background:var(--green)}
+.col-cn .ni-dot{background:var(--red)}
+.col-wo .ni-dot{background:var(--teal)}
+.ni-cat{font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.col-br .ni-cat{color:var(--up)}
+.col-cn .ni-cat{color:var(--down)}
+.col-wo .ni-cat{color:#6dd6da}
+.ni-title{font-size:13.5px;font-weight:700;color:#e0dbd3;line-height:1.38;margin-bottom:4px}
+.ni-body{font-size:12px;color:var(--muted);line-height:1.55}
+.ni-tag{
+  display:inline-block;margin-top:6px;
+  font-size:9px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 8px;border-radius:3px;
+}
+.col-br .ni-tag{background:rgba(0,156,59,.1);color:var(--up)}
+.col-cn .ni-tag{background:rgba(222,41,16,.1);color:var(--down)}
+.col-wo .ni-tag{background:rgba(0,153,168,.1);color:#6dd6da}
+
+/* ── MINERAL PANEL ── */
+.mineral-panel-full{display:none}
+.mineral-panel-full.active{display:block}
+.mineral-deep{
+  background:var(--surface);border:1px solid var(--border);
+  border-top:3px solid var(--amber);border-radius:8px;
+  padding:24px 28px;margin-bottom:20px;
+}
+.mineral-deep-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:26px;letter-spacing:.08em;color:var(--amber);margin-bottom:18px;
+}
+.mineral-deep-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px;
+}
+.md-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:6px;padding:14px 16px;
+}
+.md-name{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;font-weight:600}
+.md-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;color:var(--text);line-height:1}
+.md-chg{font-size:12px;font-weight:700;margin-top:3px}
+.mineral-analysis{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:6px;padding:18px 20px;
+  font-size:13px;color:var(--muted);line-height:1.7;
+}
+.mineral-analysis strong{color:var(--text)}
+
+/* ── ANALYSIS ROW ── */
+.analysis-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;margin-top:20px;
+}
+.an-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:18px 20px;
+}
+.an-eyebrow{font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px}
+.an-text{font-size:12.5px;color:var(--muted);line-height:1.65}
+.an-text strong{color:var(--text)}
+
+/* ── ARCHIVE ── */
+.archive-panel{display:none}
+.archive-panel.active{display:block}
+.archive-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;
+}
+.arch-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:18px 20px;cursor:pointer;
+  transition:border-color .15s;text-decoration:none;color:inherit;display:block;
+}
+.arch-card:hover{border-color:var(--orange)}
+.arch-date{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.arch-headline{font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px}
+.arch-tags{display:flex;gap:6px;flex-wrap:wrap}
+.arch-tag{
+  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;
+  background:var(--surface2);color:var(--muted);border:1px solid var(--border);
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  max-width:1200px;margin:40px auto 0;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.1em;color:var(--orange)}
+.footer-info{font-size:11px;color:var(--muted2);text-align:right;line-height:1.6}
+
+/* ── LOADING ── */
+.loading{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:300px;gap:16px;color:var(--muted);
+}
+.spinner{
+  width:36px;height:36px;border:3px solid var(--border);
+  border-top-color:var(--orange);border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FADE IN ── */
+.ni{opacity:0;animation:fadeUp .35s forwards}
+.ni:nth-child(1){animation-delay:.04s}
+.ni:nth-child(2){animation-delay:.08s}
+.ni:nth-child(3){animation-delay:.12s}
+.ni:nth-child(4){animation-delay:.16s}
+.ni:nth-child(5){animation-delay:.20s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* ── MOBILE NAV ── */
+@media(max-width:600px){
+  .topbar{padding:0 16px}
+  .topbar-logo small{display:none}
+  .nav-btn{padding:6px 10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">
+    🚂 Via<span>Log</span>
+    <small>MRS Logística · VP</small>
+  </div>
+  <nav class="topbar-nav">
+    <button class="nav-btn active" onclick="showSection('news',this)">📰 Hoje</button>
+    <button class="nav-btn" onclick="showSection('archive',this)">📁 Arquivo</button>
+    <button class="nav-pill" id="pdf-btn" onclick="window.open('newsletter.pdf','_blank')">⬇️ PDF</button>
+  </nav>
+  <div class="topbar-date" id="topbar-date"></div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker-content">
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,05/t</span><span class="ti-up">▲ +6,95% (12m)</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Alto Teor BR</span><span class="ti-val">+US$ 3/t</span><span class="ti-up">▲ vs. semana</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Importação China Mar/26</span><span class="ti-val">104,7 Mt</span><span class="ti-up">▲ +11,5% a/a</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP — China</span><span class="ti-val">Banimento ativo</span><span class="ti-flat">⚠ Risco fornecimento</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD / BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões Ferroviários BR</span><span class="ti-val">8 em 2026</span><span class="ti-up">R$ 140 bi</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">China-Europa Express 1T26</span><span class="ti-val">5.460 trens</span><span class="ti-up">▲ +29%</span></span>
+    <!-- duplicate -->
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,05/t</span><span class="ti-up">▲ +6,95% (12m)</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Alto Teor BR</span><span class="ti-val">+US$ 3/t</span><span class="ti-up">▲ vs. semana</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Importação China Mar/26</span><span class="ti-val">104,7 Mt</span><span class="ti-up">▲ +11,5% a/a</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP — China</span><span class="ti-val">Banimento ativo</span><span class="ti-flat">⚠ Risco fornecimento</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD / BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões Ferroviários BR</span><span class="ti-val">8 em 2026</span><span class="ti-up">R$ 140 bi</span></span>
+    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">China-Europa Express 1T26</span><span class="ti-val">5.460 trens</span><span class="ti-up">▲ +29%</span></span>
+  </div>
+</div>
+
+<main>
+<!-- ═══ NEWS SECTION ═══ -->
+<section id="section-news">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">🚂 Informe Ferroviário Diário</div>
+      <div class="hero-title">Via<em>Log</em></div>
+      <div class="hero-sub">Estratégia de Engenharia e Manutenção · Via Permanente · MRS Logística</div>
+    </div>
+    <div class="hero-right">
+      <div class="edition-box">
+        <div class="edition-label">Edição</div>
+        <div class="edition-date" id="hero-date">22 ABR 2026</div>
+      </div>
+      <div class="edition-num">Nº 002 · Compilado às 06h00</div>
+    </div>
+  </div>
+
+  <!-- LEAD -->
+  <div class="lead-wrap">
+    <div class="lead">
+      <div class="lead-badge">🏆 Destaque<br>do Dia</div>
+      <div class="lead-text" id="lead-text">
+        China bane BHP do mercado de minério em disputa contratual — preço spot reage e sobe para <strong>US$ 107,05/t</strong> (+6,95% em 12m). Importações chinesas batem <strong>104,7 Mt em março</strong> (+11,5% a/a). Minério alto teor brasileiro sobe US$ 3/t na semana. China-Europa Railway Express cresce <strong>29% em viagens</strong> no 1T26. Tazara (África) recebe US$ 1,24 bi para revitalização.
+      </div>
+    </div>
+  </div>
+
+  <!-- MINERAL BAR -->
+  <div class="mineral-wrap">
+    <div class="mineral-bar">
+      <div class="mi"><div class="mi-label">⛏️ Minério Fe 62% CFR</div><div class="mi-val">US$ 107,05/t</div><div class="mi-chg up">▲ +6,95% em 12 meses</div></div>
+      <div class="mi"><div class="mi-label">🇧🇷 Minério Alto Teor BR</div><div class="mi-val">+US$ 3/t</div><div class="mi-chg up">▲ vs. semana anterior</div></div>
+      <div class="mi"><div class="mi-label">🏭 Importação China Mar/26</div><div class="mi-val">104,7 Mt</div><div class="mi-chg up">▲ +11,5% a/a</div></div>
+      <div class="mi"><div class="mi-label">💵 USD / BRL</div><div class="mi-val">R$ 5,71</div><div class="mi-chg down">▼ -0,4%</div></div>
+      <div class="mi"><div class="mi-label">⚠️ BHP — Banido pela China</div><div class="mi-val" style="font-size:14px;color:var(--amber);padding-top:3px">Disputa contratual aquece mercado spot</div><div class="mi-chg warn">Suporte temporário no curto prazo</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="section-tabs">
+    <button class="stab active" onclick="switchRegion('br',this)">🇧🇷 Brasil</button>
+    <button class="stab" onclick="switchRegion('cn',this)">🇨🇳 China</button>
+    <button class="stab" onclick="switchRegion('world',this)">🌍 Mundo</button>
+    <button class="stab" onclick="switchRegion('mineral',this)">⛏️ Minério</button>
+  </div>
+
+  <!-- NEWS -->
+  <div class="news-wrap">
+
+    <!-- BRASIL -->
+    <div class="region-panel active" id="rpanel-br">
+      <div class="region-cols">
+        <div class="col-card col-br">
+          <div class="col-head"><div class="col-flag">🇧🇷</div><div class="col-title" style="color:var(--up)">Brasil</div></div>
+          <div class="col-body">
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Minério</div></div><div class="ni-title">Minério alto teor brasileiro sobe US$ 3/t — demanda chinesa pós-BHP aquece exportações</div><div class="ni-body">Com o banimento da BHP, importadores chineses migram para minério brasileiro de alto teor. Exportações se beneficiam no curto prazo, pressionando fretes e volumes via MRS e EFVM.</div><span class="ni-tag">Minério / Exportação</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Concessões</div></div><div class="ni-title">Corredor Minas-Rio a leilão em Abril — R$ 140 bi em 8 concessões para 2026</div><div class="ni-body">Maior ciclo de licitações ferroviárias em décadas. Meta: elevar ferrovia de 27% para 40% da matriz de cargas até 2035. Apenas 12.000 dos 30.000 km instalados estão ativos.</div><span class="ni-tag">ANTT / Concessões</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏭 Material Rodante</div></div><div class="ni-title">Progress Rail entrega 8 locomotivas EMD SD70ACe-BB à VLI com contrato de manutenção 10 anos</div><div class="ni-body">Primeiro acordo de manutenção de longo prazo da Progress Rail na América do Sul. Corredor Norte (Tocantins–São Luís/Matopiba) é foco da operação com redução de emissões.</div><span class="ni-tag">VLI / Manutenção</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚡ Tecnologia</div></div><div class="ni-title">Vale + Wabtec: etanol em locomotivas na EFVM. Progress Rail testa bateria EMD Joule (BHP/Pilbara)</div><div class="ni-body">Locomotivas bateria EMD Joule para heavy haul fabricadas no Brasil — teste paralelo ao FLXDrive da Wabtec. BHP será única mineradora com dois sistemas de locomotiva elétrica em teste simultâneo.</div><span class="ni-tag">Descarbonização / P&D</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚠️ Gargalo</div></div><div class="ni-title">Ferrogrão: 4º risco de adiamento — licença ambiental trava leilão de setembro</div><div class="ni-body">Incompatibilidade de bitolas (1.600 e 1.000 mm) impede integração nacional sem transbordo. Transnordestina acumula atrasos. Ferrogrão representa risco de gargalo para exportações de soja do Centro-Oeste.</div><span class="ni-tag">Gargalo Logístico</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="analysis-row">
+        <div class="an-card" style="border-top:3px solid var(--orange)"><div class="an-eyebrow" style="color:var(--orange)">🚂 Radar MRS / Via Permanente</div><div class="an-text">Alta do minério alto teor brasileiro é <strong>positiva para volumes MRS</strong> — monitorar guidance de Vale e CSN Mineração. Contrato VLI + Progress Rail (10 anos) é <strong>benchmark de modelo</strong> para acordos de manutenção de longo prazo. Corredor Minas-Rio amplia competição logística no longo prazo.</div></div>
+        <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">📊 Contexto Estratégico</div><div class="an-text">Brasil ainda carrega modal rodoviário em <strong>66% da carga</strong> — padrão incompatível com dimensão continental. Oito leilões em 2026 são o maior esforço de correção em décadas. Sucesso depende de licenciamento ambiental, capital privado e janela pré-eleitoral.</div></div>
+      </div>
+    </div>
+
+    <!-- CHINA -->
+    <div class="region-panel" id="rpanel-cn">
+      <div class="region-cols">
+        <div class="col-card col-cn">
+          <div class="col-head"><div class="col-flag">🇨🇳</div><div class="col-title" style="color:var(--down)">China</div></div>
+          <div class="col-body">
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Minério</div></div><div class="ni-title">China bane BHP — importações de minério disparam 11,5% em março (104,7 Mt)</div><div class="ni-body">Conflito contratual com BHP, 3º maior fornecedor mundial, força compradores a buscar alternativas. Futuros de minério sobem para ~760 yuan/t na bolsa de Dalian. Brasil e outros fornecedores ganham market share temporário.</div><span class="ni-tag">Minério / Mercado</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🌐 Internacional</div></div><div class="ni-title">China-Europa Railway Express: +29% em viagens no 1T26 — 5.460 trens, 546 mil TEUs</div><div class="ni-body">Crescimento de 22% em volume, atingindo 235 cidades em 26 países europeus. Clearance aduaneiro em apenas 30 min. Alternativa competitiva ao frete marítimo, especialmente com tensões no Estreito de Hormuz.</div><span class="ni-tag">Belt & Road / Logística</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Alta Velocidade</div></div><div class="ni-title">50.000 km de alta velocidade — 4,28 bi de viagens em 2025. Linhas a 400 km/h em construção</div><div class="ni-body">Fuxing 450 km/h em fase de testes. CRRC lança EMU de 200 km/h para comutadores em Henan. Meta 2026: +2.000 km em operação conforme 15º Plano Quinquenal.</div><span class="ni-tag">Alta Velocidade</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🤖 Automação</div></div><div class="ni-title">MTR Corp + Traffic Control Technology: drones com IA para inspeção de via e estruturas</div><div class="ni-body">Projeto inspeciona estações, trilhos e edificações com suporte de inteligência artificial. Paralelo: presidente vietnamita To Lam percorre 2.400 km de Beijing a Guangxi em trem de alta velocidade.</div><span class="ni-tag">Smart Rail / IA</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🌍 África</div></div><div class="ni-title">Tazara Railway: consórcio CMOC + Zijin revitaliza 1.860 km por US$ 1,24 bi — concessão de 30 anos</div><div class="ni-body">CCECC retém 80% da JV. Linha Zâmbia–Tanzânia viabiliza escoamento de cobre e cobalto sem rodovias precárias. Reflexo da nova fase Belt & Road com parceiros privados em termos comerciais.</div><span class="ni-tag">África / Belt & Road</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="analysis-row">
+        <div class="an-card" style="border-top:3px solid var(--red)"><div class="an-eyebrow" style="color:var(--down)">📊 Impacto no Mercado</div><div class="an-text">Banimento do BHP cria <strong>oportunidade de curto prazo</strong> para exportadores brasileiros de alto teor. Porém, disputa pode se resolver rapidamente. Simandou (Rio Tinto + Chinalco) escala para <strong>40–50 Mt em 2027</strong> — pressão estrutural se mantém.</div></div>
+        <div class="an-card" style="border-top:3px solid var(--teal)"><div class="an-eyebrow" style="color:#6dd6da">🔭 Tendência Estrutural</div><div class="an-text">China migra siderurgia para EAF (<strong>12% → 18%</strong> da produção) reduzindo demanda por minério cru de alto volume. Drones com IA para inspeção de via e CRRC Fuxing 450 km/h são benchmarks IHHA relevantes para estratégia de manutenção 2024–2056.</div></div>
+      </div>
+    </div>
+
+    <!-- MUNDO -->
+    <div class="region-panel" id="rpanel-world">
+      <div class="region-cols">
+        <div class="col-card col-wo">
+          <div class="col-head"><div class="col-flag">🌍</div><div class="col-title" style="color:#6dd6da">Mundo</div></div>
+          <div class="col-body">
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🚄 Alta Velocidade</div></div><div class="ni-title">Vietnã inaugura 1ª ferrovia de alta velocidade: Hanói–Ha Long, 120 km a 350 km/h — 23 minutos</div><div class="ni-body">VinSpeed + Siemens Velaro Novo: US$ 5,87 bi, entrega 2028. Projeto Norte-Sul dividido em 17 trechos (US$ 67 bi, conclusão 2035). Reduce percurso de 3h por carro para 23 min por trilho.</div><span class="ni-tag">Vietnã / Siemens</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Mineração / Ferrovia</div></div><div class="ni-title">Tazara Railway (Zâmbia–Tanzânia): US$ 1,24 bi — cobre africano ganha novo corredor logístico</div><div class="ni-body">Concessão de 30 anos para CMOC, Zijin e CCECC. Corredor compete diretamente com o Lobito (apoiado pelos EUA) pelo escoamento de minerais críticos da África Central ao mercado global.</div><span class="ni-tag">África / Mineração</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Infraestrutura</div></div><div class="ni-title">Alemanha cria Escritório ERTMS — Ontário inicia tunelamento da Ontario Line em Toronto</div><div class="ni-body">Escritório ERTMS alemão coordena retrofitting em toda a rede nacional. Ontário avança com nova linha de metrô rápido em Toronto (15,6 km, 15 estações). UE: CEF 3 aporta € 51,5 bi para TEN-T 2028–2034.</div><span class="ni-tag">Europa / Canadá</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚡ Tecnologia</div></div><div class="ni-title">UK testa navegação quântica em ferrovia — posicionamento sem GPS em túneis e zonas de interferência</div><div class="ni-body">Primeiro teste em mainline britânica. Siemens demonstra operação automática ETCS na Finlândia. FS Italiane testa 5G em 60 km da Turim–Milão para conectividade em alta velocidade e túneis.</div><span class="ni-tag">Inovação / Digital</span></div>
+            <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">💼 Negócios</div></div><div class="ni-title">Alstom registra pedidos recordes 2025/26 — Amtrak lança RFP para nova frota de longa distância</div><div class="ni-body">EBIT ajustado ~6%, novo CEO insatisfeito com margens. Amtrak busca fornecedores para substituir frota atual. Polônia lança maior expansão ferroviária de sua história via iniciativa Port Polska.</div><span class="ni-tag">EUA / Europa</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="analysis-row">
+        <div class="an-card" style="border-top:3px solid var(--teal)"><div class="an-eyebrow" style="color:#6dd6da">💡 Tendências Globais</div><div class="an-text">Tazara e Lobito evidenciam nova <strong>geopolítica de minerais críticos</strong> — ferrovias africanas são o campo de disputa. Vietnã + Siemens reforça expansão da alta velocidade asiática. Navegação quântica e ERTMS sinalizam a próxima fronteira de segurança e precisão em via permanente.</div></div>
+        <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">🔭 Radar de Inovação</div><div class="an-text">Drones com IA (MTR/China), navegação quântica (UK) e ETCS automático (Siemens/Finlândia) convergem para o conceito de <strong>ferrovia autônoma</strong>. Para Via Permanente, o Digital Twin de inspeção de via é o próximo passo natural nessa trajetória.</div></div>
+      </div>
+    </div>
+
+    <!-- MINERAL PANEL -->
+    <div class="region-panel mineral-panel-full" id="rpanel-mineral">
+      <div class="mineral-deep">
+        <div class="mineral-deep-title">⛏️ Cenário Global do Minério de Ferro</div>
+        <div class="mineral-deep-grid">
+          <div class="md-card"><div class="md-name">Minério Fe 62% (CFR Qingdao)</div><div class="md-val">US$ 107,05/t</div><div class="md-chg up">▲ +6,95% em 12 meses</div></div>
+          <div class="md-card"><div class="md-name">Minério Alto Teor Brasil</div><div class="md-val">+US$ 3/t</div><div class="md-chg up">▲ vs. semana anterior</div></div>
+          <div class="md-card"><div class="md-name">Importação China Mar/26</div><div class="md-val">104,7 Mt</div><div class="md-chg up">▲ +11,5% a/a</div></div>
+          <div class="md-card"><div class="md-name">Futuros Dalian</div><div class="md-val">~760 CNY/t</div><div class="md-chg up">▲ Reação ao banimento BHP</div></div>
+          <div class="md-card"><div class="md-name">Simandou (Guiné) 2026</div><div class="md-val">15–20 Mt</div><div class="md-chg warn">→ 40–50 Mt em 2027</div></div>
+          <div class="md-card"><div class="md-name">Projeção Média 2026</div><div class="md-val">US$ 94–100/t</div><div class="md-chg down">▼ Pressão no 2S26</div></div>
+        </div>
+        <div class="mineral-analysis">
+          <strong>Análise 22 Abr 2026 —</strong> O banimento da BHP pela China por disputa contratual criou volatilidade no mercado spot, empurrando futuros para ~760 yuan/t em Dalian. As importações chinesas de março atingiram <strong>104,7 Mt (+11,5% a/a)</strong>, reforçadas pela antecipação de compras antes de eventuais disrupções de fornecimento. O <strong>minério brasileiro de alto teor ganhou US$ 3/t na semana</strong>, benefício direto para Vale, CSN Mineração e movimentação na malha MRS/EFVM. Porém, o cenário estrutural segue pressionado: o Simandou (Rio Tinto + Chinalco, Fe&gt;65%) escala de 15–20 Mt em 2026 para <strong>40–50 Mt em 2027</strong>. A migração da China para fornos a arco elétrico — hoje 12% da produção, meta de 18% — reduz a demanda por minério cru no longo prazo. O CBAM europeu eleva o custo do aço importado na UE. <strong>Projeção consenso: queda para US$ 90–94/t no 2S26.</strong>
+          <br><br>
+          <strong style="color:var(--orange)">Impacto MRS:</strong> Monitorar guidance de clientes âncora (Vale, CSN Mineração) para ajuste de volumes. Janela favorável no curto prazo com minério brasileiro em alta. Atenção ao plano de produção da Simandou e ao ritmo de adoção de EAF na China para horizonte 2027–2030.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /news-wrap -->
+</section>
+
+<!-- ═══ ARCHIVE SECTION ═══ -->
+<section id="section-archive" style="display:none">
+  <div class="news-wrap">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.07em;color:var(--text);margin-bottom:20px">📁 Arquivo de Edições</h2>
+    <div class="archive-grid" id="archive-grid">
+      <a class="arch-card" href="#" onclick="loadEdition('002');return false">
+        <div class="arch-date">Nº 002 · Quarta, 22 Abr 2026</div>
+        <div class="arch-headline">China bane BHP — minério sobe para US$ 107,05/t. Importações chinesas batem 104,7 Mt em março (+11,5% a/a)</div>
+        <div class="arch-tags"><span class="arch-tag">🇧🇷 Brasil</span><span class="arch-tag">🇨🇳 China</span><span class="arch-tag">🌍 Mundo</span><span class="arch-tag">⛏️ Minério</span></div>
+      </a>
+      <a class="arch-card" href="#" onclick="loadEdition('001');return false">
+        <div class="arch-date">Nº 001 · Segunda, 20 Abr 2026</div>
+        <div class="arch-headline">Brasil lança maior ciclo de concessões ferroviárias em décadas — R$ 140 bi em 8 leilões. Vietnã quebra terreno em 1ª ferrovia de alta velocidade</div>
+        <div class="arch-tags"><span class="arch-tag">🇧🇷 Brasil</span><span class="arch-tag">🇨🇳 China</span><span class="arch-tag">🌍 Mundo</span><span class="arch-tag">⛏️ Minério</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-brand">ViaLog</div>
+    <div style="font-size:11px;color:var(--muted2);margin-top:2px;letter-spacing:.06em;text-transform:uppercase">Estratégia de Engenharia e Manutenção · Via Permanente · MRS Logística</div>
+  </div>
+  <div class="footer-info">
+    Fontes: Railway Gazette · BNamericas · Xinhua · Trading Economics · FMI · World Bank<br>
+    Atualização automática diária via GitHub Actions · <span id="footer-date"></span>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// ── DATE ──
+const now = new Date();
+const days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const monthsFull = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+document.getElementById('topbar-date').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+document.getElementById('footer-date').textContent = `${days[now.getDay()]}, ${now.getDate()} de ${monthsFull[now.getMonth()]} de ${now.getFullYear()}`;
+
+// ── SECTION SWITCH ──
+function showSection(id, btn) {
+  ['news','archive'].forEach(s => {
+    document.getElementById('section-' + s).style.display = s === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.topbar-nav .nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ── REGION TABS ──
+function switchRegion(id, btn) {
+  document.querySelectorAll('.region-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('rpanel-' + id);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+  // re-trigger animations
+  if (panel) {
+    panel.querySelectorAll('.ni').forEach((el, i) => {
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = '';
+      el.style.animationDelay = (i * 0.06) + 's';
+    });
+  }
+}
+
+// ── ARCHIVE ──
+function loadEdition(num) {
+  showSection('news', document.querySelector('[onclick*=news]'));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
