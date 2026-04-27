@@ -3,18 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ViaLog — Informe Ferroviário Diário · MRS Logística · Via Permanente">
 <title>ViaLog — Informe Ferroviário Diário</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚂</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#090b0e;--surface:#0e1117;--surface2:#13181f;--surface3:#1a2028;
-  --border:#1e2530;--border2:#252d38;--orange:#e85d04;--amber:#f4a22d;
-  --green:#009c3b;--red:#de2910;--teal:#0099a8;--text:#eae6df;
-  --muted:#6b717a;--muted2:#3a424e;--up:#4ade80;--down:#f87171;
-}
+:root{--bg:#090b0e;--surface:#0e1117;--surface2:#13181f;--surface3:#1a2028;--border:#1e2530;--border2:#252d38;--orange:#e85d04;--amber:#f4a22d;--green:#009c3b;--red:#de2910;--teal:#0099a8;--text:#eae6df;--muted:#6b717a;--muted2:#3a424e;--up:#4ade80;--down:#f87171;}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(9,11,14,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:58px;}
@@ -25,7 +19,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font
 .nav-btn{padding:7px 16px;border-radius:5px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:color .15s,background .15s;}
 .nav-btn:hover{color:var(--text);background:var(--surface3)}
 .nav-btn.active{color:var(--orange);background:rgba(232,93,4,.1)}
-.nav-pill{background:var(--orange);color:#fff;padding:7px 16px;border-radius:5px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:opacity .15s;}
 .ticker{position:fixed;top:58px;left:0;right:0;z-index:190;background:var(--surface);border-bottom:2px solid var(--border);padding:7px 0;overflow:hidden;white-space:nowrap;}
 .ticker-track{display:inline-flex;animation:ticker 45s linear infinite}
 .ti{display:inline-flex;align-items:center;gap:7px;margin-right:48px;font-size:12px;font-weight:500}
@@ -66,7 +59,8 @@ main{padding-top:100px}
 .col-flag{font-size:22px;line-height:1}.col-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.07em;line-height:1}
 .col-br .col-head{border-top:4px solid var(--green)}.col-cn .col-head{border-top:4px solid var(--red)}.col-wo .col-head{border-top:4px solid var(--teal)}
 .col-body{padding:14px 16px}
-.ni{padding:12px 0;border-bottom:1px solid #141820}.ni:last-child{border-bottom:none}
+.ni{padding:12px 0;border-bottom:1px solid #141820;opacity:0;animation:fadeUp .35s forwards}.ni:last-child{border-bottom:none}
+.ni:nth-child(1){animation-delay:.04s}.ni:nth-child(2){animation-delay:.08s}.ni:nth-child(3){animation-delay:.12s}.ni:nth-child(4){animation-delay:.16s}.ni:nth-child(5){animation-delay:.20s}
 .ni-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
 .ni-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .col-br .ni-dot{background:var(--green)}.col-cn .ni-dot{background:var(--red)}.col-wo .ni-dot{background:var(--teal)}
@@ -84,8 +78,6 @@ footer{border-top:1px solid var(--border);padding:24px 32px;max-width:1200px;mar
 .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.1em;color:var(--orange)}
 .footer-info{font-size:11px;color:var(--muted2);text-align:right;line-height:1.6}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-.ni{opacity:0;animation:fadeUp .35s forwards}
-.ni:nth-child(1){animation-delay:.04s}.ni:nth-child(2){animation-delay:.08s}.ni:nth-child(3){animation-delay:.12s}.ni:nth-child(4){animation-delay:.16s}.ni:nth-child(5){animation-delay:.20s}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 </style>
 </head>
@@ -98,19 +90,8 @@ footer{border-top:1px solid var(--border);padding:24px 32px;max-width:1200px;mar
   </nav>
 </header>
 <div class="ticker">
-  <div class="ticker-track">
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,11/t</span><span class="ti-up">▲ +7,01% (12m)</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP × CMRG</span><span class="ti-val">Acordo fechado!</span><span class="ti-up">▲ BHP máxima 7 semanas</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Rio Tinto 1T26</span><span class="ti-val">Produção recorde</span><span class="ti-up">▲ acima das estimativas</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões Ferroviários BR</span><span class="ti-val">8 em 2026</span><span class="ti-up">R$ 140 bi</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD / BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">China-Europa Express 1T26</span><span class="ti-val">5.460 trens</span><span class="ti-up">▲ +29%</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,11/t</span><span class="ti-up">▲ +7,01% (12m)</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP × CMRG</span><span class="ti-val">Acordo fechado!</span><span class="ti-up">▲ BHP máxima 7 semanas</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Rio Tinto 1T26</span><span class="ti-val">Produção recorde</span><span class="ti-up">▲ acima das estimativas</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões Ferroviários BR</span><span class="ti-val">8 em 2026</span><span class="ti-up">R$ 140 bi</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD / BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span>
-    <span class="ti"><span class="ti-dot">●</span><span class="ti-label">China-Europa Express 1T26</span><span class="ti-val">5.460 trens</span><span class="ti-up">▲ +29%</span></span>
+  <div class="ticker-track"><!-- TICKER_START -->
+<span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,11/t</span><span class="ti-up">▲ +7,01% (12m)</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP x CMRG</span><span class="ti-val">Acordo fechado</span><span class="ti-up">▲ máxima 7 semanas</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões BR 2026</span><span class="ti-val">8 concessões</span><span class="ti-up">R$ 140 bi</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD/BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">Minério Fe 62% CFR</span><span class="ti-val">US$ 107,11/t</span><span class="ti-up">▲ +7,01% (12m)</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">BHP x CMRG</span><span class="ti-val">Acordo fechado</span><span class="ti-up">▲ máxima 7 semanas</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">Leilões BR 2026</span><span class="ti-val">8 concessões</span><span class="ti-up">R$ 140 bi</span></span><span class="ti"><span class="ti-dot">●</span><span class="ti-label">USD/BRL</span><span class="ti-val">R$ 5,71</span><span class="ti-down">▼ -0,4%</span></span><!-- TICKER_END -->
   </div>
 </div>
 <main>
@@ -124,97 +105,98 @@ footer{border-top:1px solid var(--border);padding:24px 32px;max-width:1200px;mar
   <div class="hero-right">
     <div class="edition-box">
       <div class="edition-label">Edição</div>
-      <div class="edition-date">23 ABR 2026</div>
+      <div class="edition-date"><!-- HERO_DATE_START -->26 ABR 2026<!-- HERO_DATE_END --></div>
     </div>
-    <div class="edition-num">Nº 003 · Compilado às 06h00</div>
+    <div class="edition-num"><!-- EDICAO_NUM_START -->Nº 004 · Compilado às 06h00<!-- EDICAO_NUM_END --></div>
   </div>
 </div>
 <div class="lead-wrap">
   <div class="lead">
     <div class="lead-badge">🏆 Destaque<br>do Dia</div>
-    <div class="lead-text">🔥 <strong>BHP fecha acordo com China Mineral Resources Group</strong> após 7 meses de impasse — ações sobem para máxima de 7 semanas. Minério Fe 62% sobe para <strong>US$ 107,11/t</strong> (+7,01% em 12m). Rio Tinto reporta produção recorde no 1T26. Brasil mantém calendário de <strong>8 leilões ferroviários</strong> em 2026 — Minas-Rio iminente.</div>
+    <div class="lead-text"><!-- LEAD_START -->BHP fecha acordo com China Mineral Resources Group após 7 meses — minério sobe para <strong>US$ 107,11/t</strong>. Brasil mantém calendário de <strong>8 leilões ferroviários</strong> em 2026.<!-- LEAD_END --></div>
   </div>
 </div>
 <div class="mineral-wrap">
-  <div class="mineral-bar">
-    <div class="mi"><div class="mi-label">⛏️ Minério Fe 62% CFR</div><div class="mi-val">US$ 107,11/t</div><div class="mi-chg up">▲ +7,01% em 12 meses</div></div>
-    <div class="mi"><div class="mi-label">🤝 BHP × CMRG — HOJE</div><div class="mi-val" style="font-size:13px;color:#4ade80;padding-top:3px">Acordo fechado após 7 meses</div><div class="mi-chg up">▲ BHP na máxima de 7 semanas</div></div>
-    <div class="mi"><div class="mi-label">🏭 Produção China 1T26</div><div class="mi-val">-1,2%</div><div class="mi-chg down">▼ vs. 1T25</div></div>
-    <div class="mi"><div class="mi-label">💵 USD / BRL</div><div class="mi-val">R$ 5,71</div><div class="mi-chg down">▼ -0,4%</div></div>
-    <div class="mi"><div class="mi-label">⚠️ Simandou (Guiné)</div><div class="mi-val" style="font-size:14px;color:var(--amber);padding-top:3px">15–20 Mt em 2026 → 40–50 Mt em 2027</div><div class="mi-chg warn">Pressão estrutural baixista 2S26</div></div>
+  <div class="mineral-bar"><!-- MINERAL_BAR_START -->
+<div class="mi"><div class="mi-label">Minério Fe 62% CFR</div><div class="mi-val">US$ 107,11/t</div><div class="mi-chg up">▲ +7,01% em 12 meses</div></div><div class="mi"><div class="mi-label">BHP x CMRG</div><div class="mi-val" style="font-size:13px;color:#4ade80;padding-top:3px">Acordo fechado</div><div class="mi-chg up">▲ máxima 7 semanas</div></div><div class="mi"><div class="mi-label">USD/BRL</div><div class="mi-val">R$ 5,71</div><div class="mi-chg down">▼ -0,4%</div></div><!-- MINERAL_BAR_END -->
   </div>
 </div>
 <div class="section-tabs">
   <button class="stab active" onclick="switchRegion('br',this)">🇧🇷 Brasil</button>
   <button class="stab" onclick="switchRegion('cn',this)">🇨🇳 China</button>
   <button class="stab" onclick="switchRegion('world',this)">🌍 Mundo</button>
-</div><div class="news-wrap">
+</div>
+<div class="news-wrap">
 <div class="region-panel active" id="rpanel-br">
   <div class="region-cols">
     <div class="col-card col-br">
       <div class="col-head"><div class="col-flag">🇧🇷</div><div class="col-title" style="color:var(--up)">Brasil</div></div>
-      <div class="col-body">
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Minério</div></div><div class="ni-title">BHP fecha acordo com China — exportações brasileiras sentirão redução do prêmio</div><div class="ni-body">Com a resolução do impasse BHP × CMRG, a demanda spot por minério brasileiro de alto teor tende a arrefecer. O prêmio conquistado na semana passada (+US$ 3/t) deve se normalizar. Fortescue e Mineral Resources também se beneficiam da redução de incerteza.</div><span class="ni-tag">Minério / Exportação</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Concessões</div></div><div class="ni-title">Corredor Minas-Rio a leilão em Abril — R$ 140 bi em 8 concessões em 2026</div><div class="ni-body">Maior ciclo de licitações ferroviárias em décadas. Meta: elevar ferrovia de 27% para 40% da matriz de cargas até 2035. Apenas 12.000 dos 30.000 km instalados estão ativos no país.</div><span class="ni-tag">ANTT / Concessões</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏭 Material Rodante</div></div><div class="ni-title">Progress Rail + VLI: 8 locomotivas EMD e 1º contrato de manutenção de 10 anos na América do Sul</div><div class="ni-body">Corredor Norte (Tocantins–São Luís/Matopiba) com foco em agronegócio e redução de emissões. Modelo de parceria em manutenção ferroviária avança no Brasil como benchmark regional.</div><span class="ni-tag">VLI / Manutenção</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚡ Tecnologia</div></div><div class="ni-title">Vale + Wabtec testam etanol na EFVM. Trivia Trens contrata CAF para manutenção de 107 EMUs em SP</div><div class="ni-body">Trivia Trens fecha contrato com CAF para manutenção das linhas 11-Coral, 12-Safira e 13-Jade. CRRC já iniciou produção de 44 trens-metrô para SP — panorama de modernização acelerada.</div><span class="ni-tag">Descarbonização / SP</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚠️ Gargalo</div></div><div class="ni-title">Ferrogrão: leilão de setembro em risco. Brasil soma 42 projetos ferroviários urbanos ativos</div><div class="ni-body">19 projetos em execução, SP lidera com 7. Expansão Metro BH (1,7 km) e Guarulhos People Mover (2,6 km) com entrega em 2026. Transnordestina segue atrasada no Nordeste.</div><span class="ni-tag">Gargalo / Urbano</span></div>
+      <div class="col-body"><!-- BR_COL_START -->
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--up)">⛏️ Minério</div></div><div class="ni-title">BHP fecha acordo com China — exportações brasileiras sentirão redução do prêmio</div><div class="ni-body">Com a resolução do impasse BHP x CMRG, a demanda spot por minério brasileiro de alto teor tende a arrefecer. O prêmio conquistado na semana passada deve se normalizar.</div><span class="ni-tag" style="background:rgba(0,156,59,.1);color:var(--up)">Minério / Exportação</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--up)">🏗️ Concessões</div></div><div class="ni-title">Corredor Minas-Rio a leilão em Abril — R$ 140 bi em 8 concessões em 2026</div><div class="ni-body">Maior ciclo de licitações ferroviárias em décadas. Meta: elevar ferrovia de 27% para 40% da matriz de cargas até 2035.</div><span class="ni-tag" style="background:rgba(0,156,59,.1);color:var(--up)">ANTT / Concessões</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--up)">🏭 Material Rodante</div></div><div class="ni-title">Progress Rail + VLI: 1º contrato de manutenção de 10 anos na América do Sul</div><div class="ni-body">Corredor Norte com foco em agronegócio e redução de emissões. Modelo de parceria em manutenção ferroviária avança no Brasil como benchmark regional.</div><span class="ni-tag" style="background:rgba(0,156,59,.1);color:var(--up)">VLI / Manutenção</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--up)">⚡ Tecnologia</div></div><div class="ni-title">Vale + Wabtec testam etanol na EFVM. Trivia Trens contrata CAF para 107 EMUs em SP</div><div class="ni-body">CRRC já iniciou produção de 44 trens-metrô para SP. Panorama de modernização acelerada na malha urbana brasileira.</div><span class="ni-tag" style="background:rgba(0,156,59,.1);color:var(--up)">Descarbonização</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--up)">⚠️ Gargalo</div></div><div class="ni-title">Ferrogrão: leilão de setembro em risco. 42 projetos ferroviários urbanos ativos no Brasil</div><div class="ni-body">19 projetos em execução, SP lidera com 7. Expansão Metro BH e Guarulhos People Mover com entrega em 2026.</div><span class="ni-tag" style="background:rgba(0,156,59,.1);color:var(--up)">Gargalo / Urbano</span></div>
+<!-- BR_COL_END -->
       </div>
     </div>
   </div>
   <div class="analysis-row">
-    <div class="an-card" style="border-top:3px solid var(--orange)"><div class="an-eyebrow" style="color:var(--orange)">🚂 Radar MRS / Via Permanente</div><div class="an-text">Resolução BHP × CMRG <strong>normaliza fluxo de minério australiano</strong> — prêmio temporário do minério brasileiro tende a recuar. Monitorar guidance de Vale e CSN Mineração. Contrato VLI + Progress Rail (10 anos) é <strong>benchmark de modelo</strong> para acordos de manutenção de longo prazo. Drones com IA (MTR/China) para inspeção de via são tendência IHHA a acompanhar.</div></div>
-    <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">📊 Contexto Estratégico</div><div class="an-text">Brasil ainda carrega modal rodoviário em <strong>66% da carga</strong> — incompatível com dimensão continental. Oito leilões em 2026 são o maior esforço de correção em décadas. Sucesso depende de licenciamento ambiental, capital privado e janela pré-eleitoral.</div></div>
+    <div class="an-card" style="border-top:3px solid var(--orange)"><div class="an-eyebrow" style="color:var(--orange)">🚂 Radar MRS</div><div class="an-text"><!-- RADAR_MRS_START -->Resolução BHP x CMRG normaliza fluxo de minério australiano — prêmio temporário do minério brasileiro tende a recuar. Monitorar guidance de Vale e CSN Mineração. Contrato VLI + Progress Rail é benchmark de modelo para acordos de manutenção de longo prazo.<!-- RADAR_MRS_END --></div></div>
+    <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">📊 Contexto</div><div class="an-text"><!-- TENDENCIAS_START -->Brasil ainda carrega modal rodoviário em 66% da carga. Oito leilões em 2026 são o maior esforço de correção em décadas. Sucesso depende de licenciamento ambiental e capital privado.<!-- TENDENCIAS_END --></div></div>
   </div>
 </div>
 <div class="region-panel" id="rpanel-cn">
   <div class="region-cols">
     <div class="col-card col-cn">
       <div class="col-head"><div class="col-flag">🇨🇳</div><div class="col-title" style="color:var(--down)">China</div></div>
-      <div class="col-body">
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Minério</div></div><div class="ni-title">CMRG e BHP fecham acordo após 7 meses — China retoma compras de minério australiano</div><div class="ni-body">A China Mineral Resources Group encerrou a disputa que havia restringido Jimblebar fines desde setembro de 2025. Visita do CEO entrante da BHP a Pequim foi decisiva. Produção doméstica de minério cai 1,2% no 1T26, ampliando dependência de importações.</div><span class="ni-tag">Minério / CMRG</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">📊 Produção</div></div><div class="ni-title">Rio Tinto reporta produção recorde no 1T26 apesar de clima adverso na Austrália</div><div class="ni-body">Shipments de Pilbara recuperando ritmo normal após impacto climático. BHP produz 197 Mt em 9 meses com guidance inalterado. Fortescue e Mineral Resources também se beneficiam da redução de incerteza no setor.</div><span class="ni-tag">Produção / Rio Tinto</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🌐 Internacional</div></div><div class="ni-title">China-Europa Railway Express: +29% em viagens no 1T26 — 5.460 trens, 546 mil TEUs</div><div class="ni-body">Crescimento de 22% em volume, 235 cidades em 26 países europeus. Clearance aduaneiro em 30 min. Alternativa competitiva ao frete marítimo com tensões no Estreito de Hormuz.</div><span class="ni-tag">Belt & Road / Logística</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Alta Velocidade</div></div><div class="ni-title">Fuxing a 450 km/h em testes — China planeja +2.000 km de novas linhas em 2026</div><div class="ni-body">4,28 bilhões de viagens em 2025 (+6,6% a/a). CRRC lança EMU de 200 km/h para comutadores. Chongqing–Kunming (700 km) com assentamento de trilhos em Yunnan — conclusão prevista em 2028.</div><span class="ni-tag">Alta Velocidade</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🤖 Automação</div></div><div class="ni-title">MTR Corp + Traffic Control Technology: drones com IA inspecionam trilhos e estruturas</div><div class="ni-body">Drones autônomos com IA para inspeção contínua de via permanente — reduz necessidade de equipes em campo e aumenta frequência de ciclos de inspeção. Modelo replicável em heavy haul de grande extensão.</div><span class="ni-tag">Smart Rail / IA</span></div>
+      <div class="col-body"><!-- CN_COL_START -->
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--down)">⛏️ Minério</div></div><div class="ni-title">CMRG e BHP fecham acordo após 7 meses — China retoma compras de minério australiano</div><div class="ni-body">A China Mineral Resources Group encerrou a disputa que havia restringido Jimblebar fines desde setembro de 2025. Produção doméstica de minério cai 1,2% no 1T26.</div><span class="ni-tag" style="background:rgba(222,41,16,.1);color:var(--down)">Minério / CMRG</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--down)">🌐 Internacional</div></div><div class="ni-title">China-Europa Railway Express: +29% em viagens no 1T26 — 5.460 trens, 546 mil TEUs</div><div class="ni-body">235 cidades em 26 países europeus. Clearance aduaneiro em 30 min. Alternativa competitiva ao frete marítimo.</div><span class="ni-tag" style="background:rgba(222,41,16,.1);color:var(--down)">Belt & Road</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--down)">🏗️ Alta Velocidade</div></div><div class="ni-title">Fuxing a 450 km/h em testes — China planeja +2.000 km de novas linhas em 2026</div><div class="ni-body">4,28 bilhões de viagens em 2025 (+6,6% a/a). Chongqing–Kunming (700 km) com assentamento de trilhos em andamento.</div><span class="ni-tag" style="background:rgba(222,41,16,.1);color:var(--down)">Alta Velocidade</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--down)">🤖 Automação</div></div><div class="ni-title">MTR Corp: drones com IA inspecionam trilhos e estruturas ferroviárias</div><div class="ni-body">Drones autônomos reduzem necessidade de equipes em campo e aumentam frequência de ciclos de inspeção. Modelo replicável em heavy haul.</div><span class="ni-tag" style="background:rgba(222,41,16,.1);color:var(--down)">Smart Rail / IA</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:var(--down)">🌍 África</div></div><div class="ni-title">Tazara Railway: US$ 1,24 bi — consórcio CMOC+Zijin revitaliza 1.860 km</div><div class="ni-body">Concessão de 30 anos. Linha Zâmbia–Tanzânia viabiliza escoamento de cobre e cobalto ao oceano.</div><span class="ni-tag" style="background:rgba(222,41,16,.1);color:var(--down)">África / Belt & Road</span></div>
+<!-- CN_COL_END -->
       </div>
     </div>
-  </div>
-  <div class="analysis-row">
-    <div class="an-card" style="border-top:3px solid var(--red)"><div class="an-eyebrow" style="color:var(--down)">📊 Impacto no Mercado</div><div class="an-text">Resolução BHP × CMRG reduz volatilidade no mercado spot. Produção doméstica chinesa caindo 1,2% no 1T26 amplia dependência de importações — <strong>positivo para exportadores brasileiros</strong> no médio prazo. Simandou escala para <strong>40–50 Mt em 2027</strong> — pressão estrutural se mantém.</div></div>
-    <div class="an-card" style="border-top:3px solid var(--teal)"><div class="an-eyebrow" style="color:#6dd6da">🔭 Tendência Estrutural</div><div class="an-text">China migra para EAF (<strong>12% → 18%</strong>) reduzindo demanda por minério cru. Drones com IA e CRRC Fuxing 450 km/h são benchmarks IHHA para estratégia de manutenção 2024–2056 da Via Permanente MRS.</div></div>
   </div>
 </div>
 <div class="region-panel" id="rpanel-world">
   <div class="region-cols">
     <div class="col-card col-wo">
       <div class="col-head"><div class="col-flag">🌍</div><div class="col-title" style="color:#6dd6da">Mundo</div></div>
-      <div class="col-body">
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⛏️ Mineração</div></div><div class="ni-title">BHP atinge 197 Mt em 9 meses — Fortescue e MinRes também se beneficiam do acordo com CMRG</div><div class="ni-body">Resultado operacional BHP acima das estimativas. Resolução reduz incerteza para todo o setor de minério australiano. Ações do setor minerador disparam com o fim do impasse de 7 meses.</div><span class="ni-tag">BHP / Produção</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🚄 Alta Velocidade</div></div><div class="ni-title">Vietnã: 1ª ferrovia de alta velocidade em construção — Hanói a Ha Long em 23 min (Siemens Velaro Novo)</div><div class="ni-body">VinSpeed + Siemens: US$ 5,87 bi, 120 km a 350 km/h, conclusão em 2028. Chile: EFE assina US$ 470 mi para reconstrução Santiago–Batuco — nova frente ferroviária na América Latina.</div><span class="ni-tag">Vietnã / Chile</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">🏗️ Infraestrutura</div></div><div class="ni-title">Tazara (África): US$ 1,24 bi · Alemanha lança ERTMS · Ontário inicia tunelamento Ontario Line</div><div class="ni-body">Corredor Tazara (1.860 km Zâmbia–Tanzânia) concedido por 30 anos ao consórcio CMOC+Zijin+CCECC. ERTMS alemão coordena retrofitting nacional. UE: CEF 3 com € 51,5 bi para TEN-T 2028–2034.</div><span class="ni-tag">África / Europa / Canadá</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">⚡ Tecnologia</div></div><div class="ni-title">UK testa navegação quântica em mainline — Siemens demonstra ETCS automático na Finlândia</div><div class="ni-body">Posicionamento quântico sem GPS testado em ferrovia operacional britânica. FS Italiane testa 5G em 60 km da Turim–Milão. Inovações convergem para conceito de ferrovia autônoma.</div><span class="ni-tag">Inovação / Digital</span></div>
-        <div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat">💼 Negócios</div></div><div class="ni-title">Alstom registra pedidos recordes — Amtrak lança RFP para nova frota. Polônia lança maior expansão ferroviária da história</div><div class="ni-body">EBIT Alstom ~6%, novo CEO insatisfeito com margens. Amtrak busca fornecedores para renovar frota de longa distância. Port Polska: maior programa de expansão ferroviária polonês.</div><span class="ni-tag">EUA / Europa</span></div>
+      <div class="col-body"><!-- WORLD_COL_START -->
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:#6dd6da">⛏️ Mineração</div></div><div class="ni-title">BHP atinge 197 Mt em 9 meses — Fortescue e MinRes também se beneficiam do acordo CMRG</div><div class="ni-body">Resultado operacional BHP acima das estimativas. Resolução reduz incerteza para todo o setor de minério australiano.</div><span class="ni-tag" style="background:rgba(0,153,168,.1);color:#6dd6da">BHP / Produção</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:#6dd6da">🚄 Alta Velocidade</div></div><div class="ni-title">Vietnã: 1ª ferrovia de alta velocidade — Hanói a Ha Long em 23 min (Siemens Velaro Novo)</div><div class="ni-body">US$ 5,87 bi, 120 km a 350 km/h, conclusão em 2028. Chile: EFE assina US$ 470 mi para reconstrução Santiago–Batuco.</div><span class="ni-tag" style="background:rgba(0,153,168,.1);color:#6dd6da">Vietnã / Chile</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:#6dd6da">🏗️ Infraestrutura</div></div><div class="ni-title">Alemanha lança ERTMS nacional — Ontário inicia tunelamento Ontario Line em Toronto</div><div class="ni-body">UE: CEF 3 com € 51,5 bi para TEN-T 2028–2034. Tazara (1.860 km) concedida por 30 anos ao consórcio chinês.</div><span class="ni-tag" style="background:rgba(0,153,168,.1);color:#6dd6da">Europa / Canadá</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:#6dd6da">⚡ Tecnologia</div></div><div class="ni-title">UK testa navegação quântica em mainline — Siemens demonstra ETCS automático na Finlândia</div><div class="ni-body">Posicionamento quântico sem GPS. FS Italiane testa 5G em 60 km da Turim–Milão. Convergência para ferrovia autônoma.</div><span class="ni-tag" style="background:rgba(0,153,168,.1);color:#6dd6da">Inovação / Digital</span></div>
+<div class="ni"><div class="ni-meta"><div class="ni-dot"></div><div class="ni-cat" style="color:#6dd6da">💼 Negócios</div></div><div class="ni-title">Alstom registra pedidos recordes — Amtrak lança RFP para nova frota nacional</div><div class="ni-body">Polônia lança maior expansão ferroviária da história via Port Polska. Amtrak busca fornecedores para renovar frota de longa distância.</div><span class="ni-tag" style="background:rgba(0,153,168,.1);color:#6dd6da">EUA / Europa</span></div>
+<!-- WORLD_COL_END -->
       </div>
     </div>
   </div>
   <div class="analysis-row">
-    <div class="an-card" style="border-top:3px solid var(--teal)"><div class="an-eyebrow" style="color:#6dd6da">💡 Tendências Globais</div><div class="an-text">Tazara + Lobito: geopolítica de minerais críticos define ferrovias africanas como campo estratégico. Chile retoma investimento ferroviário. Vietnã e Siemens consolidam nova frente de alta velocidade na Ásia. Navegação quântica, ERTMS e ETCS automático convergem para <strong>ferrovia autônoma</strong> como horizonte tecnológico.</div></div>
-    <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">🔭 Radar de Inovação</div><div class="an-text">Drones com IA (MTR/China), navegação quântica (UK) e ETCS automático (Siemens/Finlândia) convergem para o conceito de <strong>ferrovia autônoma</strong>. Para Via Permanente MRS, o Digital Twin de inspeção é o próximo passo natural nessa trajetória.</div></div>
+    <div class="an-card" style="border-top:3px solid var(--teal)"><div class="an-eyebrow" style="color:#6dd6da">💡 Tendências Globais</div><div class="an-text">Tazara + Lobito: geopolítica de minerais críticos define ferrovias africanas como campo estratégico. Vietnã e Siemens consolidam nova frente de alta velocidade asiática. Navegação quântica e ETCS automático convergem para ferrovia autônoma.</div></div>
+    <div class="an-card" style="border-top:3px solid var(--amber)"><div class="an-eyebrow" style="color:var(--amber)">🔭 Radar de Inovação</div><div class="an-text"><!-- MINERIO_ANALISE_START -->Drones com IA (MTR/China), navegação quântica (UK) e ETCS automático (Siemens) convergem para ferrovia autônoma. Digital Twin de inspeção de Via Permanente é o próximo passo para MRS.<!-- MINERIO_ANALISE_END --></div></div>
   </div>
 </div>
 </div>
-</section><section id="section-archive" style="display:none">
+</section>
+<section id="section-archive" style="display:none">
   <div class="news-wrap">
     <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.07em;color:var(--text);margin-bottom:20px">📁 Arquivo de Edições</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px">Nº 004 · Domingo, 26 Abr 2026</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px">BHP fecha acordo com China — minério sobe para US$ 107,11/t</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
         <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px">Nº 003 · Quinta, 23 Abr 2026</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px">BHP fecha acordo com China após 7 meses — minério sobe para US$ 107,11/t</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px">BHP fecha acordo com CMRG após 7 meses de impasse</div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
         <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px">Nº 001 · Segunda, 20 Abr 2026</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px">Brasil lança maior ciclo de concessões ferroviárias em décadas — R$ 140 bi em 8 leilões</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:10px">Brasil lança maior ciclo de concessões ferroviárias — R$ 140 bi em 8 leilões</div>
       </div>
     </div>
   </div>
@@ -226,7 +208,7 @@ footer{border-top:1px solid var(--border);padding:24px 32px;max-width:1200px;mar
   </div>
   <div class="footer-info">
     Fontes: Railway Gazette · BNamericas · Xinhua · Trading Economics · FMI · SteelOrbis<br>
-    Quinta-feira, 23 de Abril de 2026 · Edição Nº 003
+    Atualização automática diária · ViaLog
   </div>
 </footer>
 </main>
@@ -247,4 +229,3 @@ function switchRegion(id,btn){
 </script>
 </body>
 </html>
-            
